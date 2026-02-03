@@ -28,7 +28,15 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/createPost" element={<CreatePost />} />
                     <Route path="/userPage" element={<UserPage />} />
-                    <Route path="/userProfile" element={<UserProfile />} />
+                    <Route
+                        path="/userProfile"
+                        element={
+                            <UserProfile
+                                email="example@email.com"
+                                username="my_user143"
+                            />
+                        }
+                    />
                     <Route path="/about" element={<About />} />
                 </Routes>
             </div>
