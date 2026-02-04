@@ -1,4 +1,3 @@
-import Buttons from "./Buttons";
 import Grid from "./Grid";
 import Snippet from "./Snippet";
 //this is currently used only for testing
