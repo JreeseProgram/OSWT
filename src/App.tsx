@@ -27,7 +27,15 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/createPost" element={<CreatePost />} />
-                    <Route path="/userPage" element={<UserPage />} />
+                    <Route
+                        path="/userPage"
+                        element={
+                            <UserPage
+                                username="user_835"
+                                profilePic="https://placehold.co/300x300/png"
+                            />
+                        }
+                    />
                     <Route
                         path="/userProfile"
                         element={
