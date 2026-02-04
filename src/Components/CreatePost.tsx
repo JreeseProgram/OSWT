@@ -64,7 +64,10 @@ const CreatePost = () => {
                         required
                     />
                 </div>
-                <button type="submit" className="btn btn-primary w-11">
+                <button
+                    type="submit"
+                    className="btn btn-primary d-flex ms-auto w-11"
+                >
                     Submit
                 </button>
             </form>
