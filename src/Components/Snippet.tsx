@@ -1,11 +1,20 @@
-import type { ReactNode } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 interface Props {
     header: string;
     imgRef?: string;
-    body: ReactNode;
+    body: string;
+    postID: number;
 }
-const Snippet = ({ header, imgRef, body }: Props) => {
+
+const Snippet = ({ header, imgRef, body, postID }: Props) => {
+    const navigate = useNavigate();
+
+    const handleFullscreen = () => {
+        navigate(`/${postID}`, {
+            state: { header, imgRef, body, postID },
+        });
+    };
     return (
         <div
             className="card"
@@ -16,7 +25,9 @@ const Snippet = ({ header, imgRef, body }: Props) => {
                 //flexDirection: "column",
                 display: "block",
                 overflow: "hidden",
+                cursor: "pointer",
             }}
+            onClick={handleFullscreen}
         >
             <h3
                 className="text-center"
@@ -53,7 +64,7 @@ const Snippet = ({ header, imgRef, body }: Props) => {
                     overflow: "hidden",
                 }}
             >
-                {body}
+                <p>{body}</p>
             </div>
         </div>
     );

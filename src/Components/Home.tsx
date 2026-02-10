@@ -4,30 +4,35 @@ import Snippet from "./Snippet";
 const testSnippets = [
     <Snippet
         header="POST1"
-        body={<p>I am normal text</p>}
+        body="I am normal text"
         imgRef="https://placehold.co/400x300/png"
+        postID={1}
     />,
     <Snippet
         header="POST2"
-        body={<p>I am normal text</p>}
+        body="I am normal text"
         imgRef="https://placehold.co/200x150/png"
+        postID={2}
     />,
-    <Snippet header="POST3" body={<p>I am normal text</p>} />,
+    <Snippet header="POST3" body="I am normal text" postID={3} />,
     <Snippet
         header="POST4"
-        body={<p>I am normal text</p>}
+        body="I am normal text"
         imgRef="https://placehold.co/700x400/png"
+        postID={4}
     />,
-    <Snippet header="POST5" body={<p>TEXTING TEXTER</p>} />,
+    <Snippet header="POST5" body="TEXTING TEXTER" postID={5} />,
     <Snippet
         header="POST6"
-        body={<p>TEXTING TEXTER</p>}
+        body="TEXTING TEXTER"
         imgRef="https://placehold.co/300x300/png"
+        postID={6}
     />,
     <Snippet
         header="POST7"
-        body={<p>TEXTING TEXTER</p>}
+        body="BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH BEHOLD I AM SUPER LONG TEXT AHHAHAHHAHAHAHAHHAH "
         imgRef="https://placehold.co/800x500/png"
+        postID={7}
     />,
 ];
 
@@ -41,17 +46,3 @@ const Home = () => {
 };
 
 export default Home;
-
-/**
- * template
- <Snippet
-                header="Placeholder Header"
-                body={<p>I am a body text :^D</p>}
-                imgRef="https://placehold.co/400x300/png"
-            />
-            <br></br>
-            <Snippet
-                header="I shouldnt have image"
-                body={<p>I dont got no image</p>}
-            />
- */
