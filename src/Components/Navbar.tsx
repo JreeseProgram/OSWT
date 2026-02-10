@@ -9,9 +9,10 @@ export interface NavItems {
 interface Props {
     siteTitle: string;
     navbarElements: NavItems[];
+    username?: string;
 }
 
-const Navbar = ({ siteTitle, navbarElements }: Props) => {
+const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
     return (
         <nav className="navbar bg-body-tertiary fixed-top">
             <div className="container-fluid">
@@ -49,14 +50,21 @@ const Navbar = ({ siteTitle, navbarElements }: Props) => {
                         />
                     </div>
                     {/** This makes each list dynamically and auto-close on hitting a link, allowing reuse of this component */}
-                    <div className="offcanvas-body">
-                        <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <div className="offcanvas-body d-flex flex-column">
+                        <ul className="navbar-nav w-100 pe-3 my-0">
                             {navbarElements.map((element) => (
-                                <li className="nav-item" key={element.path}>
-                                    <Link to={element.path}>
+                                <li
+                                    className="nav-item w-100 border-bottom border-top"
+                                    key={element.path}
+                                >
+                                    <Link
+                                        className="nav-link d-block py-2 text-center"
+                                        to={element.path}
+                                    >
                                         <button
                                             type="button"
                                             data-bs-dismiss="offcanvas"
+                                            className="fs-3 w-100 text-center border-0 bg-transparent"
                                         >
                                             {element.text}
                                         </button>
@@ -64,6 +72,34 @@ const Navbar = ({ siteTitle, navbarElements }: Props) => {
                                 </li>
                             ))}
                         </ul>
+                        <div className="mt-auto d-flex border-top pt-3">
+                            {!username && (
+                                <Link to="/login" className="ms-auto">
+                                    <button
+                                        type="button"
+                                        className="btn btn-lg btn-outline-primary"
+                                        data-bs-dismiss="offcanvas"
+                                    >
+                                        Login
+                                    </button>
+                                </Link>
+                            )}
+                            {username && (
+                                <>
+                                    <h3 className="text-start">{username}</h3>
+                                    <button
+                                        type="button"
+                                        className="btn btn-lg btn-outline-primary ms-auto"
+                                        data-bs-dismiss="offcanvas"
+                                        onClick={() => {
+                                            console.log("logout performed");
+                                        }}
+                                    >
+                                        Logout
+                                    </button>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
