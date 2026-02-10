@@ -1,7 +1,6 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const PostPage = () => {
-    const { postID } = useParams();
     const { state } = useLocation();
     console.log(state);
 
