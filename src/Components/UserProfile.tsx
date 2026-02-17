@@ -39,7 +39,7 @@ const UserProfile = ({ username, email }: Props) => {
 
     return (
         <>
-            <h1 className="text-center">User Profile</h1>
+            <h1 className="text-center mt-3">User Profile</h1>
             {/*Username */}
             <form className="container py-3">
                 <h4 className="text-center py-4">Username</h4>

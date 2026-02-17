@@ -18,30 +18,30 @@ const Signup = () => {
                 className="container d-flex justify-content-center py-5"
                 onSubmit={handleSubmit}
             >
-                <div className="w-50 justify-content-center">
+                <div className="w-75 justify-content-center">
                     <input
                         type="text"
-                        className="form-control  mb-3"
+                        className="form-control  mb-4"
                         placeholder="Email"
                         required
                     />
 
                     <input
                         type="text"
-                        className="form-control  mb-3"
+                        className="form-control  mb-4"
                         placeholder="Username"
                         required
                     />
 
                     <input
                         type="password"
-                        className="form-control mb-3"
+                        className="form-control mb-4"
                         placeholder="Password"
                         required
                     />
                     <input
                         type="password"
-                        className="form-control mb-3"
+                        className="form-control mb-4"
                         placeholder="Confirm Password"
                         required
                     />

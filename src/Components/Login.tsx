@@ -5,7 +5,7 @@ const Login = () => {
         <>
             <h1 className="text-center pt-4">Login to PLACEHOLDER</h1>
             <form className="container d-flex justify-content-center py-5">
-                <div className="w-50 justify-content-center">
+                <div className="w-75 justify-content-center">
                     <input
                         type="text"
                         className="form-control  mb-3"

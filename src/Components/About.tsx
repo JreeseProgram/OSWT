@@ -2,7 +2,7 @@ const About = () => {
     return (
         <>
             <div>
-                <h1 className="text-center">About Us Placeholder</h1>
+                <h1 className="text-center mt-3">About Us Placeholder</h1>
                 <p className="text-center mx-5 px-5">
                     We are a company of Lorem Ipsum and will continue to provide
                     a class leading experience in Lorem Ipsum Placeholder and
