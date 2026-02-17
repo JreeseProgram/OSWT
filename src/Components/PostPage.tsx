@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { testData } from "./TestData";
-import Snippet from "./Snippet";
 
 const PostPage = () => {
     const { postID } = useParams();
