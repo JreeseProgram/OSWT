@@ -14,12 +14,12 @@ const PostPage = () => {
         <>
             <div
                 style={{
-                    background: "rgba(0,0,0,0.1)",
+                    background: "rgba(0,0,0,0.15)",
                     minHeight: "100vh",
                 }}
             >
                 <div
-                    className="pt-5 container d-flex justify-content-center h-100"
+                    className="container d-flex justify-content-center h-100"
                     style={{
                         position: "relative",
                         zIndex: 2,
@@ -48,18 +48,20 @@ const PostPage = () => {
                         <h1 className="text-center pb-3 pt-3">
                             {state.header}
                         </h1>
-                        {state.imgRef && (
-                            <img
-                                src={state.imgRef}
-                                className="img-fluid d-block mx-auto my-3 pb-3"
-                                style={{
-                                    width: "640px",
-                                    minWidth: "640px",
-                                    aspectRatio: "16/9",
-                                    objectFit: "cover",
-                                }}
-                            />
-                        )}
+                        <div>
+                            {state.imgRef && (
+                                <img
+                                    src={state.imgRef}
+                                    className="img-fluid d-block mx-auto my-3 pb-3"
+                                    style={{
+                                        width: "100%",
+                                        height: "100%",
+                                        aspectRatio: "16/9",
+                                        objectFit: "cover",
+                                    }}
+                                />
+                            )}
+                        </div>
                         <p className="text-center">{state.body}</p>
                     </div>
                 </div>

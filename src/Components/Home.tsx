@@ -39,7 +39,7 @@ const testSnippets = [
 const Home = () => {
     return (
         <>
-            <h1 className="text-center">Home</h1>
+            <h1 className="text-center pt-3 pb-2">Home</h1>
             <Grid snippets={testSnippets}></Grid>
         </>
     );

@@ -21,7 +21,7 @@ const CreatePost = () => {
 
     return (
         <>
-            <h1 className="text-center">Create a Post</h1>
+            <h1 className="text-center pt-3">Create a Post</h1>
             <form className="container py-5">
                 {/* Title */}
                 <div className="mb-3">
@@ -45,7 +45,7 @@ const CreatePost = () => {
                         onChange={handleImageUpload}
                     />
                     {image && (
-                        <div className="mb-3 mt-3">
+                        <div className="mb-3 mt-3 d-flex justify-content-center">
                             <img
                                 src={image}
                                 className="img-fluid rounded mb-3"

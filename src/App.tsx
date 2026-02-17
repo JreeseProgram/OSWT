@@ -26,7 +26,7 @@ function App() {
                 <Navbar
                     siteTitle="Temporary Site Title"
                     navbarElements={navbarItems}
-                    //username="user_1837"
+                    username="user_1837"
                 />
             </div>
             <div>
