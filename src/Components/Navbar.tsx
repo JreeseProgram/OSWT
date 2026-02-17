@@ -14,7 +14,10 @@ interface Props {
 
 const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
     return (
-        <nav className="navbar bg-body-tertiary fixed-top">
+        <nav
+            className="navbar nav-bg-color bg-body-tertiary fixed-top"
+            style={{ background: "#AECCE8" }}
+        >
             <div className="container-fluid">
                 <button
                     className="navbar-toggler"
@@ -30,7 +33,7 @@ const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
                     {siteTitle}
                 </Link>
                 <div
-                    className="offcanvas offcanvas-start"
+                    className="offcanvas nav-bg-color offcanvas-start"
                     tabIndex={-1}
                     id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel"
@@ -77,7 +80,7 @@ const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
                                 <Link to="/login" className="ms-auto">
                                     <button
                                         type="button"
-                                        className="btn btn-lg btn-outline-primary"
+                                        className="btn btn-lg btn-primary"
                                         data-bs-dismiss="offcanvas"
                                     >
                                         Login

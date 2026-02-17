@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { testData } from "./TestData";
+import GotoTop from "./GotoTop";
 
 const PostPage = () => {
     const { postID } = useParams();
@@ -15,6 +16,7 @@ const PostPage = () => {
     if (state) {
         return (
             <>
+                <GotoTop />
                 <div
                     style={{
                         background: "rgba(0,0,0,0.15)",
@@ -87,7 +89,8 @@ const PostPage = () => {
     if (!loadedPostData) {
         return (
             <>
-                <div>
+                <GotoTop />
+                <div className="d-block justify-content-center pt-5">
                     <h1>POST IS NOT FOUND</h1>
                     <h3>
                         Please return to <Link to="/">Home</Link>
@@ -98,6 +101,7 @@ const PostPage = () => {
     }
     return (
         <>
+            <GotoTop />
             <div
                 style={{
                     background: "rgba(0,0,0,0.15)",
