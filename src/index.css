@@ -10,7 +10,7 @@ body{
   width: 40px;
   height: 40px;
   background: none;
-  background-image: url("./public/thumbs-up-hollow.png");
+  background-image: url("/thumbs-up-hollow.png");
   background-size: cover;
   background-position: center;
   border: none;
@@ -22,7 +22,7 @@ body{
   width: 40px;
   height: 40px;
   background: none;
-  background-image: url("./public/thumbs-up-fill.png");
+  background-image: url("/thumbs-up-fill.png");
   background-size: cover;
   background-position: center;
   border: none;
