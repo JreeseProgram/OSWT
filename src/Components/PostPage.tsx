@@ -1,12 +1,23 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { testData } from "./TestData";
 import GotoTop from "./GotoTop";
+import { useState } from "react";
 
 const PostPage = () => {
     const { postID } = useParams();
     const { state } = useLocation();
     console.log(state);
 
+    const [liked, setLiked] = useState(state.isLiked);
+    const btnClassname = liked
+        ? "thumbs-up-fill d-flex flex-column mt-auto"
+        : "thumbs-up-hollow d-flex flex-column mt-auto";
+
+    const handleLikeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setLiked(!liked);
+        //TODO: Add like functionlity with backend
+    };
     const navigate = useNavigate();
 
     const handleBack = () => {
@@ -66,6 +77,12 @@ const PostPage = () => {
                                         }}
                                     />
                                 )}
+                            </div>
+                            <div className="d-flex justify-content-end mt-auto">
+                                <button
+                                    onClick={handleLikeClick}
+                                    className={btnClassname}
+                                ></button>
                             </div>
                             <p className="text-center">{state.body}</p>
                         </div>
@@ -151,6 +168,12 @@ const PostPage = () => {
                                     }}
                                 />
                             )}
+                        </div>
+                        <div className="d-flex justify-content-end mt-auto">
+                            <button
+                                onClick={handleLikeClick}
+                                className={btnClassname}
+                            ></button>
                         </div>
                         <p className="text-center">{loadedPostData.body}</p>
                     </div>

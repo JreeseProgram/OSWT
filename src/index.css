@@ -5,3 +5,27 @@ body{
 .nav-bg-color{
   background-color: #A5BCCF !important;
 }
+
+.thumbs-up-hollow{
+  width: 40px;
+  height: 40px;
+  background: none;
+  background-image: url("./src/assets/thumbs-up-hollow.png");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.thumbs-up-fill{
+  width: 40px;
+  height: 40px;
+  background: none;
+  background-image: url("./src/assets/thumbs-up-fill.png");
+  background-size: cover;
+  background-position: center;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
