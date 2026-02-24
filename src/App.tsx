@@ -24,7 +24,7 @@ function App() {
         <>
             <div className="pb-5">
                 <Navbar
-                    siteTitle="Temporary Site Title"
+                    siteTitle="Snipp-it"
                     navbarElements={navbarItems}
                     //username="user_1837"
                 />

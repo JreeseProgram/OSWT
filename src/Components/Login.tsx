@@ -3,7 +3,7 @@ import { Link } from "react-router";
 const Login = () => {
     return (
         <>
-            <h1 className="text-center pt-4">Login to PLACEHOLDER</h1>
+            <h1 className="text-center pt-4">Login to Snipp-It</h1>
             <form className="container d-flex justify-content-center py-5">
                 <div className="w-75 justify-content-center">
                     <input

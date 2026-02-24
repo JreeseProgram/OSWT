@@ -13,7 +13,7 @@ const Signup = () => {
     };
     return (
         <>
-            <h1 className="text-center pt-4">Sign Up for PLACEHOLDER</h1>
+            <h1 className="text-center pt-4">Sign Up for Snipp-It</h1>
             <form
                 className="container d-flex justify-content-center py-5"
                 onSubmit={handleSubmit}
