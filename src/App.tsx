@@ -9,6 +9,7 @@ import About from "./Components/About";
 import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import PostPage from "./Components/PostPage";
+import EditPost from "./Components/EditPost";
 
 //Site Config
 const navbarItems: NavItems[] = [
@@ -55,6 +56,7 @@ function App() {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/:postID" element={<PostPage />} />
+                    <Route path="/editPost/:postID" element={<EditPost />} />
                 </Routes>
             </div>
         </>
