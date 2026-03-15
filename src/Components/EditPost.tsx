@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { testData } from "./TestData";
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 
 const EditPost = () => {
     {
@@ -15,7 +14,7 @@ const EditPost = () => {
                 that file that triggered it and makes a temporary URL for displaying it*/
     }
 
-    const { postID } = useParams();
+    //const { postID } = useParams();
 
     const handleDeletion = () => {
         //TODO: backend deletion
@@ -28,9 +27,9 @@ const EditPost = () => {
         }
     };
 
-    const loadedPostData = testData
-        .map((snippet) => snippet.props)
-        .find((p) => Number(p.postID) === Number(postID));
+    // const loadedPostData = testData
+    //     .map((snippet) => snippet.props)
+    //     .find((p) => Number(p.postID) === Number(postID));
 
     return (
         <>
@@ -45,7 +44,7 @@ const EditPost = () => {
                         placeholder="Enter Title Here"
                         required
                     >
-                        {loadedPostData.header}
+                        {/*loadedPostData.header*/}
                     </input>
                 </div>
                 {/* Image */}
@@ -59,7 +58,7 @@ const EditPost = () => {
                         className="form-control"
                         onChange={handleImageUpload}
                     />
-                    {loadedPostData.imgRef && image == null && (
+                    {/*loadedPostData.imgRef && image == null && (
                         <div className="mb-3 mt-3 d-flex justify-content-center">
                             <img
                                 src={loadedPostData.imgRef}
@@ -67,7 +66,7 @@ const EditPost = () => {
                                 style={{ maxHeight: "250px" }}
                             />
                         </div>
-                    )}
+                    )*/}
                     {image && (
                         <div className="mb-3 mt-3 d-flex justify-content-center">
                             <img
@@ -87,7 +86,7 @@ const EditPost = () => {
                         placeholder="Enter Body Here"
                         required
                     >
-                        {loadedPostData.body}
+                        {/*loadedPostData.body*/}
                     </textarea>
                 </div>
                 <div className="d-flex justify-content-end">

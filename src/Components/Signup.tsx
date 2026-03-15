@@ -44,7 +44,7 @@ const Signup = () => {
         try {
             console.log("Trying to signup!");
 
-            const signData = await signUp(email, password2, username);
+            await signUp(email, password2, username);
             console.log("Passed Signup");
 
             alert("Check your email to confirm your account");

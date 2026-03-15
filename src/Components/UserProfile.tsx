@@ -9,6 +9,11 @@ const UserProfile = () => {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
 
+    //called just to get around unfinished stuff
+    originalPassword;
+    setUsername("");
+    setEmail("");
+    //end above
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
