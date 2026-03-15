@@ -91,8 +91,8 @@ const PostPage = () => {
     async function handleLikeClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         if (!user) {
-            await setError("You are not logged in");
-            alert(likeError);
+            //setError("You are not logged in");
+            alert("You are not logged in");
             return;
         }
 
