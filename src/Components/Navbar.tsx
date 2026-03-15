@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-
+import { useUser } from "./UserContext";
+import supabaseClient from "./supabaseClient";
 //makes a simple template for how to get incoming data for dynamic elements
 export interface NavItems {
     text: string;
@@ -9,10 +10,12 @@ export interface NavItems {
 interface Props {
     siteTitle: string;
     navbarElements: NavItems[];
-    username?: string;
 }
 
-const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
+const Navbar = ({ siteTitle, navbarElements }: Props) => {
+    const user = useUser();
+    //setup a function to look for this in a query
+
     return (
         <nav
             className="navbar nav-bg-color bg-body-tertiary fixed-top"
@@ -38,7 +41,7 @@ const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
                     id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel"
                 >
-                    <div className="offcanvas-header">
+                    <div className="offcanvas-header justify-content-center">
                         <h4
                             className="offcanvas-title"
                             id="offcanvasNavbarLabel"
@@ -76,7 +79,7 @@ const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
                             ))}
                         </ul>
                         <div className="mt-auto d-flex border-top pt-3">
-                            {!username && (
+                            {!user && (
                                 <Link to="/login" className="ms-auto">
                                     <button
                                         type="button"
@@ -87,15 +90,17 @@ const Navbar = ({ siteTitle, navbarElements, username }: Props) => {
                                     </button>
                                 </Link>
                             )}
-                            {username && (
+                            {user && (
                                 <>
-                                    <h3 className="text-start">{username}</h3>
+                                    <h3 className="text-start">
+                                        {user.user_metadata.display_name}
+                                    </h3>
                                     <button
                                         type="button"
                                         className="btn btn-lg btn-outline-primary ms-auto"
                                         data-bs-dismiss="offcanvas"
-                                        onClick={() => {
-                                            console.log("logout performed");
+                                        onClick={async () => {
+                                            await supabaseClient.auth.signOut();
                                         }}
                                     >
                                         Logout

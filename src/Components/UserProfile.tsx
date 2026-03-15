@@ -1,16 +1,13 @@
 import { useState } from "react";
 
-interface Props {
-    username: string;
-    email: string;
-}
-
-const UserProfile = ({ username, email }: Props) => {
+const UserProfile = () => {
     //password update handling
     const [originalPassword, checkPassword] = useState("");
     const [password1, setPassword1] = useState("");
     const [password2, setPassword2] = useState("");
     const [error, setError] = useState("");
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
 
     const handlePasswordSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -19,14 +16,7 @@ const UserProfile = ({ username, email }: Props) => {
             setError("ERROR: Passwords must match");
             return;
         }
-        //TODO: add password check for original
-        if (originalPassword !== "") {
-            setError("PLACEHOLDER BUT I SEE PASSWORD AS: " + originalPassword);
-            return;
-        }
-
         setError("");
-        //TODO: add submission success
     };
     //Profile picture handling
     const [image, setImage] = useState<string | null>(null);

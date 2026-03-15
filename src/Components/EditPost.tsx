@@ -43,9 +43,10 @@ const EditPost = () => {
                         type="text"
                         className="form-control"
                         placeholder="Enter Title Here"
-                        value={loadedPostData.header}
                         required
-                    />
+                    >
+                        {loadedPostData.header}
+                    </input>
                 </div>
                 {/* Image */}
                 <div className="mb-3">
@@ -84,9 +85,10 @@ const EditPost = () => {
                         className="form-control"
                         rows={4}
                         placeholder="Enter Body Here"
-                        value={loadedPostData.body}
                         required
-                    />
+                    >
+                        {loadedPostData.body}
+                    </textarea>
                 </div>
                 <div className="d-flex justify-content-end">
                     <button

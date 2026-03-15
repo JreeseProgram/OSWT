@@ -1,28 +1,78 @@
 import { useState } from "react";
+import { useUser } from "./UserContext";
+import supabaseClient from "./supabaseClient";
 
 const CreatePost = () => {
-    {
-        /* presents a value and function to update the value, and the use states give 
-        the option to have image as a string or null, and then the() has the default 
-        of the object (null) */
-    }
+    const [header, setHeader] = useState("");
     const [image, setImage] = useState<string | null>(null);
-    {
-        /*so basically this works as once an image is uploaded it triggers
-            a change event, it scoops it up and is the event. Then it targets 
-            that file that triggered it and makes a temporary URL for displaying it*/
-    }
+    const [imageFile, setFile] = useState<File | null>(null);
+    const [body, setBody] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<string | null>(null);
+    const user = useUser();
+
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            setFile(file);
             setImage(URL.createObjectURL(file));
         }
     };
 
+    async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
+        if (!user) {
+            setSuccess(null);
+            setError("Not Logged in");
+            return;
+        }
+
+        let img_ref: string | null = null;
+
+        if (imageFile) {
+            const filePath = `${user.id}/${crypto.randomUUID()}-${imageFile.name}`;
+            const { error: uploadError } = await supabaseClient.storage
+                .from("snippet_images")
+                .upload(filePath, imageFile);
+            //check for an error
+            if (uploadError) {
+                setSuccess(null);
+                setError(uploadError.message);
+                return;
+            }
+
+            img_ref = supabaseClient.storage
+                .from("snippet_images")
+                .getPublicUrl(filePath).data.publicUrl;
+        }
+
+        const { error } = await supabaseClient
+            .from("Snippets")
+            .insert({
+                user_id: user.id,
+                header: header,
+                img: img_ref,
+                body: body,
+            })
+            .select()
+            .single();
+
+        if (error) {
+            setSuccess(null);
+            setError(error.message);
+        }
+
+        setHeader("");
+        setBody("");
+        setImage(null);
+        setFile(null);
+        setSuccess("Snippet has been successfully posted!");
+    }
+
     return (
         <>
             <h1 className="text-center pt-3">Create a Post</h1>
-            <form className="container py-5">
+            <form className="container py-5" onSubmit={handleSubmit}>
                 {/* Title */}
                 <div className="mb-3">
                     <label className="form-label">Title</label>
@@ -30,6 +80,10 @@ const CreatePost = () => {
                         type="text"
                         className="form-control"
                         placeholder="Enter Title Here"
+                        value={header}
+                        onChange={(e) => {
+                            setHeader(e.target.value);
+                        }}
                         required
                     />
                 </div>
@@ -61,6 +115,10 @@ const CreatePost = () => {
                         className="form-control"
                         rows={4}
                         placeholder="Enter Body Here"
+                        value={body}
+                        onChange={(e) => {
+                            setBody(e.target.value);
+                        }}
                         required
                     />
                 </div>
@@ -71,6 +129,8 @@ const CreatePost = () => {
                     Submit
                 </button>
             </form>
+            {error && <p className="alert alert-danger">{error}</p>}
+            {success && <p className="alert alert-success">{success}</p>}
         </>
     );
 };

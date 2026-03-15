@@ -10,6 +10,9 @@ import Login from "./Components/Login";
 import Signup from "./Components/Signup";
 import PostPage from "./Components/PostPage";
 import EditPost from "./Components/EditPost";
+import { UserProvider } from "./Components/UserContext";
+import { ProtectedRoute } from "./Components/Auth";
+import ConfirmSignUp from "./Components/ConfirmSignUp";
 
 //Site Config
 const navbarItems: NavItems[] = [
@@ -22,44 +25,56 @@ const navbarItems: NavItems[] = [
 
 function App() {
     return (
-        <>
+        <UserProvider>
             <div className="pb-5">
-                <Navbar
-                    siteTitle="Snipp-it"
-                    navbarElements={navbarItems}
-                    //username="user_1837"
-                />
+                <Navbar siteTitle="Snipp-it" navbarElements={navbarItems} />
             </div>
             <div>
                 <Routes>
                     <Route path="/" element={<Home />} />
-                    <Route path="/createPost" element={<CreatePost />} />
+                    <Route
+                        path="/createPost"
+                        element={
+                            <ProtectedRoute>
+                                <CreatePost />
+                            </ProtectedRoute>
+                        }
+                    />
                     <Route
                         path="/userPage"
                         element={
-                            <UserPage
-                                username="user_835"
-                                profilePic="https://placehold.co/300x300/png"
-                            />
+                            <ProtectedRoute>
+                                <UserPage
+                                    username="user_835"
+                                    profilePic="https://placehold.co/300x300/png"
+                                />
+                            </ProtectedRoute>
                         }
                     />
                     <Route
                         path="/userProfile"
                         element={
-                            <UserProfile
-                                email="example@email.com"
-                                username="my_user143"
-                            />
+                            <ProtectedRoute>
+                                <UserProfile />
+                            </ProtectedRoute>
                         }
                     />
                     <Route path="/about" element={<About />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path="/confirmSignUp" element={<ConfirmSignUp />} />
                     <Route path="/:postID" element={<PostPage />} />
-                    <Route path="/editPost/:postID" element={<EditPost />} />
+                    <Route
+                        path="/editPost/:postID"
+                        element={
+                            <ProtectedRoute>
+                                <EditPost />
+                            </ProtectedRoute>
+                        }
+                    />
                 </Routes>
             </div>
-        </>
+        </UserProvider>
     );
 }
 export default App;
