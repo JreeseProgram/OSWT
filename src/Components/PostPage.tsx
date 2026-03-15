@@ -11,7 +11,7 @@ const PostPage = () => {
     console.log(state);
 
     const [liked, setLiked] = useState(false);
-    const [likeError, setError] = useState<string | null>(null);
+    //const [likeError, setError] = useState<string | null>(null);
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
