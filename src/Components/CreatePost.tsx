@@ -27,23 +27,26 @@ const CreatePost = () => {
             return;
         }
 
+        //if there is an image, send it to the storage
         let img_ref: string | null = null;
 
         if (imageFile) {
             const filePath = `${user.id}/${crypto.randomUUID()}-${imageFile.name}`;
             const { error: uploadError } = await supabaseClient.storage
                 .from("snippet_images")
-                .upload(filePath, imageFile);
-            //check for an error
+                .upload(filePath, imageFile, {
+                    cacheControl: "3600",
+                    upsert: false,
+                    contentType: imageFile.type,
+                });
+
             if (uploadError) {
                 setSuccess(null);
                 setError(uploadError.message);
                 return;
             }
 
-            img_ref = supabaseClient.storage
-                .from("snippet_images")
-                .getPublicUrl(filePath).data.publicUrl;
+            img_ref = filePath;
         }
 
         const { error } = await supabaseClient
@@ -60,12 +63,14 @@ const CreatePost = () => {
         if (error) {
             setSuccess(null);
             setError(error.message);
+            return;
         }
 
         setHeader("");
         setBody("");
         setImage(null);
         setFile(null);
+        setError(null);
         setSuccess("Snippet has been successfully posted!");
     }
 

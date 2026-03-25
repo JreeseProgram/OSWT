@@ -15,8 +15,47 @@ const PostPage = () => {
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
+    const [ownPost, setOwnPost] = useState<boolean | null>(null);
 
     const user = useUser();
+
+    function getImageUrl(path: string) {
+        const { data } = supabaseClient.storage
+            .from("snippet_images")
+            .getPublicUrl(path);
+
+        return data.publicUrl;
+    }
+
+    //Check if post is their own, then show EDIT button
+    useEffect(() => {
+        const checkUser = async () => {
+            if (!user) {
+                return;
+            }
+
+            const loggedUser = (await supabaseClient.auth.getUser()).data.user
+                ?.id;
+            const { data: id, error } = await supabaseClient
+                .from("Snippets")
+                .select("user_id")
+                .eq("post_id", Number(postID))
+                .single();
+
+            if (error) {
+                setOwnPost(false);
+                alert("AAAAAAAAHHHHHHHHHHH:" + error.message);
+            }
+
+            if (loggedUser === String(id?.user_id)) {
+                setOwnPost(true);
+            } else {
+                setOwnPost(false);
+            }
+        };
+        checkUser();
+    }, [user, postID]);
+
     //check if signed user has liked the post
     useEffect(() => {
         if (!user) {
@@ -87,6 +126,12 @@ const PostPage = () => {
     const btnClassname = liked
         ? "thumbs-up-fill d-flex flex-column mt-auto"
         : "thumbs-up-hollow d-flex flex-column mt-auto";
+
+    function handleEditClick(e: React.MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+
+        navigate("/editPost/" + postID);
+    }
 
     async function handleLikeClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
@@ -171,7 +216,7 @@ const PostPage = () => {
                             <div>
                                 {state.imgRef && (
                                     <img
-                                        src={state.imgRef}
+                                        src={getImageUrl(state.imgRef)}
                                         className="img-fluid d-block mx-auto my-3 pb-3"
                                         style={{
                                             width: "100%",
@@ -198,6 +243,17 @@ const PostPage = () => {
                                 ></button>
                             </div>
                             <p className="text-center">{state.body}</p>
+                            {ownPost && (
+                                <div className=" w-100 d-flex justify-content-center pt-3">
+                                    <button
+                                        className="btn btn-warning"
+                                        style={{ width: "650px" }}
+                                        onClick={handleEditClick}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -218,20 +274,21 @@ const PostPage = () => {
                 .single();
             if (error) {
                 setSnippetStatus(false);
+            } else if (data == null) {
+                setSnippetStatus(false);
             }
             setSnippet(data);
             setSnippetStatus(true);
             setLoading(false);
         };
         loadPost();
-    }, [postID]);
+    }, [postID, user]);
 
     if (loading) {
         return <h3 className="pt-3 center-text">Loading...</h3>;
     }
 
-    if (!isSnippet) {
-        setLoading(false);
+    if (!isSnippet && !loading) {
         return (
             <>
                 <GotoTop />
@@ -243,7 +300,9 @@ const PostPage = () => {
                 </div>
             </>
         );
-    } else {
+    }
+
+    if (isSnippet && !loading) {
         return (
             <>
                 <GotoTop />
@@ -286,7 +345,7 @@ const PostPage = () => {
                             <div>
                                 {snippet.img && (
                                     <img
-                                        src={snippet.img}
+                                        src={getImageUrl(snippet.img)}
                                         className="img-fluid d-block mx-auto my-3 pb-3"
                                         style={{
                                             width: "100%",
@@ -313,6 +372,17 @@ const PostPage = () => {
                                 ></button>
                             </div>
                             <p className="text-center">{snippet.body}</p>
+                            {ownPost && (
+                                <div className=" w-100 d-flex justify-content-center pt-3">
+                                    <button
+                                        className="btn btn-warning"
+                                        style={{ width: "650px" }}
+                                        onClick={handleEditClick}
+                                    >
+                                        Edit
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>

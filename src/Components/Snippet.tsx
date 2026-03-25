@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import supabaseClient from "./supabaseClient";
 
 interface Props {
     postID: number;
@@ -16,6 +17,13 @@ const Snippet = ({ header, imgRef, body, postID }: Props) => {
             state: { header, imgRef, body, postID },
         });
     };
+    function getImageUrl(path: string) {
+        const { data } = supabaseClient.storage
+            .from("snippet_images")
+            .getPublicUrl(path);
+
+        return data.publicUrl;
+    }
 
     return (
         <div
@@ -49,7 +57,7 @@ const Snippet = ({ header, imgRef, body, postID }: Props) => {
                     }}
                 >
                     <img
-                        src={imgRef}
+                        src={getImageUrl(imgRef)}
                         className="card-img-top"
                         style={{
                             width: "100%",
