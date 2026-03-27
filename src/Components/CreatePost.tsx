@@ -95,7 +95,7 @@ const CreatePost = () => {
                 {/* Image */}
                 <div className="mb-3">
                     <label className="form-label">
-                        Upload Image {"(Optional)"}
+                        Upload Image {"(Optional) (2MB Maximum)"}
                     </label>
                     <input
                         type="file"
