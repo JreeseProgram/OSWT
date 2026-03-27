@@ -1,5 +1,5 @@
 import type React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { signUp } from "./Auth";
 import { useEffect, useState } from "react";
 import supabaseClient from "./supabaseClient";
@@ -110,6 +110,10 @@ const Signup = () => {
                         Sign up
                     </button>
                     {error && <p className="alert alert-danger">{error}</p>}
+                    <p>
+                        Already a user? <Link to="/login">click here</Link> to
+                        go to the login page
+                    </p>
                 </div>
             </form>
         </>
