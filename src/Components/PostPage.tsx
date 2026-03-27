@@ -274,9 +274,14 @@ const PostPage = () => {
                 .single();
             if (error) {
                 setSnippetStatus(false);
-            } else if (data == null) {
+                setLoading(false);
+                return;
+            } else if (data === null) {
+                setLoading(false);
                 setSnippetStatus(false);
+                return;
             }
+            console.log(data);
             setSnippet(data);
             setSnippetStatus(true);
             setLoading(false);
@@ -292,9 +297,9 @@ const PostPage = () => {
         return (
             <>
                 <GotoTop />
-                <div className="d-block justify-content-center pt-5">
-                    <h1>POST IS NOT FOUND</h1>
-                    <h3>
+                <div className="justify-content-center pt-5">
+                    <h1 className="text-center">POST IS NOT FOUND</h1>
+                    <h3 className="text-center">
                         Please return to <Link to="/">Home</Link>
                     </h3>
                 </div>
