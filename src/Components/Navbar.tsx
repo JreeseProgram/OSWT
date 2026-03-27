@@ -1,4 +1,4 @@
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
 //makes a simple template for how to get incoming data for dynamic elements
