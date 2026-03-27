@@ -30,8 +30,6 @@ const Home = () => {
                 setError(error.message);
                 return;
             }
-            console.log("SNIPPETS:", data, error);
-
             setSnippets(data || []);
             setLoading(false);
         };

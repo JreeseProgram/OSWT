@@ -42,15 +42,10 @@ const Signup = () => {
         }
         //proceed with Login
         try {
-            console.log("Trying to signup!");
-
             await signUp(email, password2, username);
-            console.log("Passed Signup");
-
             alert("Check your email to confirm your account");
         } catch (error: any) {
             setError(error.message);
-            console.log(error.message);
             return;
         }
     }

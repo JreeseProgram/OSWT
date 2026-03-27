@@ -8,10 +8,8 @@ import { SupabaseClient } from "@supabase/supabase-js";
 const PostPage = () => {
     const { postID } = useParams();
     const { state } = useLocation();
-    console.log(state);
 
     const [liked, setLiked] = useState(false);
-    //const [likeError, setError] = useState<string | null>(null);
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
@@ -23,7 +21,6 @@ const PostPage = () => {
         const { data } = supabaseClient.storage
             .from("snippet_images")
             .getPublicUrl(path);
-
         return data.publicUrl;
     }
 
@@ -281,7 +278,6 @@ const PostPage = () => {
                 setSnippetStatus(false);
                 return;
             }
-            console.log(data);
             setSnippet(data);
             setSnippetStatus(true);
             setLoading(false);
