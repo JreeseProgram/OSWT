@@ -115,7 +115,11 @@ const PostPage = () => {
                 .eq("id", userObject?.user_id)
                 .single();
 
-            setPfp(profile?.profile_picture);
+            setPfp(
+                supabaseClient.storage
+                    .from("profile_pics")
+                    .getPublicUrl(profile?.profile_picture).data.publicUrl,
+            );
         };
         getUsername();
     }, [postID]);
