@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
 //makes a simple template for how to get incoming data for dynamic elements
@@ -14,6 +14,7 @@ interface Props {
 
 const Navbar = ({ siteTitle, navbarElements }: Props) => {
     const user = useUser();
+    const navigate = useNavigate();
     //setup a function to look for this in a query
 
     return (
@@ -101,6 +102,7 @@ const Navbar = ({ siteTitle, navbarElements }: Props) => {
                                         data-bs-dismiss="offcanvas"
                                         onClick={async () => {
                                             await supabaseClient.auth.signOut();
+                                            navigate("/");
                                         }}
                                     >
                                         Logout
