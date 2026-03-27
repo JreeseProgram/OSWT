@@ -53,6 +53,7 @@ const Login = () => {
                         }}
                         required
                     />
+                    {error && <p className="alert alert-danger">{error}</p>}
                     <button
                         type="submit"
                         className="btn btn-primary d-flex ms-auto w-10"
@@ -63,7 +64,6 @@ const Login = () => {
                         Not a user? <Link to="/signup">Sign Up Here</Link>
                     </p>
                     <br />
-                    {error && <p className="alert alert-danger">{error}</p>}
                 </div>
             </form>
         </>

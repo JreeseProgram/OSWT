@@ -103,14 +103,17 @@ const Signup = () => {
                         onChange={(e) => setPassword2(e.target.value)}
                         required
                     />
+                    {error && (
+                        <p className="alert alert-danger my-4">{error}</p>
+                    )}
                     <button
                         type="submit"
                         className="btn btn-primary d-flex ms-auto w-10"
                     >
                         Sign up
                     </button>
-                    {error && <p className="alert alert-danger">{error}</p>}
-                    <p>
+
+                    <p className="text-center mt-3">
                         Already a user? <Link to="/login">click here</Link> to
                         go to the login page
                     </p>
