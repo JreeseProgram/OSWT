@@ -68,6 +68,20 @@ const Navbar = ({ siteTitle }: Props) => {
                             <li className="nav-item w-100 border-bottom border-top">
                                 <Link
                                     className="nav-link d-block py-2 text-center"
+                                    to={"/search"}
+                                >
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
+                                    >
+                                        {"Search"}
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
                                     to={"/createPost"}
                                 >
                                     <button

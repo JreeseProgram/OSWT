@@ -12,6 +12,7 @@ import EditPost from "./Components/EditPost";
 import { UserProvider } from "./Components/UserContext";
 import { ProtectedRoute } from "./Components/Auth";
 import ConfirmSignUp from "./Components/ConfirmSignUp";
+import Search from "./Components/Search";
 
 function App() {
     return (
@@ -40,6 +41,7 @@ function App() {
                         }
                     />
                     <Route path="/about" element={<About />} />
+                    <Route path="/search" element={<Search />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/confirmSignUp" element={<ConfirmSignUp />} />
