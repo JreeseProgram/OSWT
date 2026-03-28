@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./Components/Home";
 import Navbar from "./Components/Navbar";
-import type { NavItems } from "./Components/Navbar";
 import CreatePost from "./Components/CreatePost";
 import UserPage from "./Components/UserPage";
 import UserProfile from "./Components/UserProfile";
@@ -14,20 +13,11 @@ import { UserProvider } from "./Components/UserContext";
 import { ProtectedRoute } from "./Components/Auth";
 import ConfirmSignUp from "./Components/ConfirmSignUp";
 
-//Site Config
-const navbarItems: NavItems[] = [
-    { text: "Home", path: "/" },
-    { text: "Post", path: "/createPost" },
-    { text: "My Page", path: "/userPage" },
-    { text: "My Profile", path: "/userProfile" },
-    { text: "About Us", path: "/about" },
-];
-
 function App() {
     return (
         <UserProvider>
             <div className="pb-5">
-                <Navbar siteTitle="Snipp-it" navbarElements={navbarItems} />
+                <Navbar siteTitle="Snipp-it" />
             </div>
             <div>
                 <Routes>
@@ -40,17 +30,7 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
-                    <Route
-                        path="/userPage"
-                        element={
-                            <ProtectedRoute>
-                                <UserPage
-                                    username="user_835"
-                                    profilePic="https://placehold.co/300x300/png"
-                                />
-                            </ProtectedRoute>
-                        }
-                    />
+                    <Route path="/userPage/:userID" element={<UserPage />} />
                     <Route
                         path="/userProfile"
                         element={

@@ -1,21 +1,14 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
-//makes a simple template for how to get incoming data for dynamic elements
-export interface NavItems {
-    text: string;
-    path: string;
-}
 
 interface Props {
     siteTitle: string;
-    navbarElements: NavItems[];
 }
 
-const Navbar = ({ siteTitle, navbarElements }: Props) => {
+const Navbar = ({ siteTitle }: Props) => {
     const user = useUser();
     const navigate = useNavigate();
-    //setup a function to look for this in a query
 
     return (
         <nav
@@ -56,28 +49,80 @@ const Navbar = ({ siteTitle, navbarElements }: Props) => {
                             aria-label="Close"
                         />
                     </div>
-                    {/** This makes each list dynamically and auto-close on hitting a link, allowing reuse of this component */}
                     <div className="offcanvas-body d-flex flex-column">
                         <ul className="navbar-nav w-100 pe-3 my-0">
-                            {navbarElements.map((element) => (
-                                <li
-                                    className="nav-item w-100 border-bottom border-top"
-                                    key={element.path}
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
+                                    to={"/"}
                                 >
-                                    <Link
-                                        className="nav-link d-block py-2 text-center"
-                                        to={element.path}
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
                                     >
-                                        <button
-                                            type="button"
-                                            data-bs-dismiss="offcanvas"
-                                            className="fs-3 w-100 text-center border-0 bg-transparent"
-                                        >
-                                            {element.text}
-                                        </button>
-                                    </Link>
-                                </li>
-                            ))}
+                                        {"Home"}
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
+                                    to={"/createPost"}
+                                >
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
+                                    >
+                                        {"Post"}
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
+                                    to={
+                                        user ? `/userPage/${user.id}` : "/login"
+                                    }
+                                >
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
+                                    >
+                                        {"My Page"}
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
+                                    to={"/userProfile"}
+                                >
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
+                                    >
+                                        {"My Profile"}
+                                    </button>
+                                </Link>
+                            </li>
+                            <li className="nav-item w-100 border-bottom border-top">
+                                <Link
+                                    className="nav-link d-block py-2 text-center"
+                                    to={"/about"}
+                                >
+                                    <button
+                                        type="button"
+                                        data-bs-dismiss="offcanvas"
+                                        className="fs-3 w-100 text-center border-0 bg-transparent"
+                                    >
+                                        {"About Us"}
+                                    </button>
+                                </Link>
+                            </li>
                         </ul>
                         <div className="mt-auto d-flex border-top pt-3">
                             {!user && (
