@@ -1,20 +1,26 @@
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import GotoTop from "./GotoTop";
 import { useEffect, useState } from "react";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
-import { SupabaseClient } from "@supabase/supabase-js";
 
 const PostPage = () => {
     const { postID } = useParams();
-    const { state } = useLocation();
 
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
+
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
     const [posterID, setPosterID] = useState<string>("");
+
     const [ownPost, setOwnPost] = useState<boolean | null>(null);
+
+    const [snippet, setSnippet] = useState<any>(null);
+    const [isSnippet, setSnippetStatus] = useState(false);
+    const [snippetLoading, setSnippetLoading] = useState(true);
+
+    const [userLoading, setUserLoading] = useState(true);
 
     const user = useUser();
     const navigate = useNavigate();
@@ -25,58 +31,6 @@ const PostPage = () => {
             .getPublicUrl(path);
         return data.publicUrl;
     }
-
-    //Check if post is their own, then show EDIT button
-    useEffect(() => {
-        const checkUser = async () => {
-            if (!user) {
-                return;
-            }
-
-            const loggedUser = (await supabaseClient.auth.getUser()).data.user
-                ?.id;
-            const { data: id, error } = await supabaseClient
-                .from("Snippets")
-                .select("user_id")
-                .eq("post_id", Number(postID))
-                .single();
-
-            if (error) {
-                setOwnPost(false);
-                alert("AAAAAAAAHHHHHHHHHHH:" + error.message);
-            }
-            setPosterID(id?.user_id);
-
-            if (loggedUser === String(id?.user_id)) {
-                setOwnPost(true);
-            } else {
-                setOwnPost(false);
-            }
-        };
-        checkUser();
-    }, [user, postID]);
-
-    //check if signed user has liked the post
-    useEffect(() => {
-        if (!user) {
-            return;
-        }
-        const checkLike = async () => {
-            const { data } = await supabaseClient
-                .from("Like_Table")
-                .select("*")
-                .eq("snippet_id", postID)
-                .eq("user_id", user.id)
-                .maybeSingle();
-
-            if (data) {
-                setLiked(true);
-            } else {
-                setLiked(false);
-            }
-        };
-        checkLike();
-    }, [user, postID, SupabaseClient]);
 
     //Check Total Likes
     useEffect(() => {
@@ -93,39 +47,90 @@ const PostPage = () => {
             }
         };
         findLikes();
-    }, [supabaseClient, postID, liked]);
+        if (!user) {
+            return;
+        }
+        const checkLike = async () => {
+            const { data } = await supabaseClient
+                .from("Like_Table")
+                .select("*")
+                .eq("snippet_id", Number(postID))
+                .eq("user_id", user.id)
+                .maybeSingle();
+
+            if (data) {
+                setLiked(true);
+            } else {
+                setLiked(false);
+            }
+        };
+        checkLike();
+    }, [user, postID, liked]);
 
     //Retrieve Username
     useEffect(() => {
         const getUsername = async () => {
+            setUserLoading(true);
             const { data: userObject } = await supabaseClient
                 .from("Snippets")
                 .select("user_id")
                 .eq("post_id", Number(postID))
                 .single();
 
-            const { data: username } = await supabaseClient
-                .from("Profiles")
-                .select("username")
-                .eq("id", userObject?.user_id)
-                .single();
-
-            setPostUsername(username?.username);
-
             const { data: profile } = await supabaseClient
                 .from("Profiles")
-                .select("profile_picture")
+                .select("username, profile_picture")
                 .eq("id", userObject?.user_id)
                 .single();
+
+            setPostUsername(profile?.username);
 
             setPfp(
                 supabaseClient.storage
                     .from("profile_pics")
                     .getPublicUrl(profile?.profile_picture).data.publicUrl,
             );
+            setUserLoading(false);
         };
         getUsername();
     }, [postID]);
+
+    // Retrieves post information
+    useEffect(() => {
+        const loadPost = async () => {
+            const { data, error } = await supabaseClient
+                .from("Snippets")
+                .select("*")
+                .eq("post_id", Number(postID))
+                .single();
+            if (error) {
+                setSnippetStatus(false);
+                setSnippetLoading(false);
+                return;
+            } else if (data === null) {
+                setSnippetLoading(false);
+                setSnippetStatus(false);
+                return;
+            }
+            setSnippet(data);
+            setSnippetStatus(true);
+            setPosterID(data.user_id);
+            setSnippetLoading(false);
+        };
+        loadPost();
+    }, [postID, user]);
+
+    //Check if post is their own, then show EDIT button
+    useEffect(() => {
+        if (!user) {
+            return;
+        }
+        if (!posterID) {
+            return;
+        }
+        setOwnPost(user.id === posterID);
+        return;
+    }, [posterID]);
 
     const btnClassname = liked
         ? "thumbs-up-fill d-flex flex-column mt-auto"
@@ -133,14 +138,12 @@ const PostPage = () => {
 
     function handleEditClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.preventDefault();
-
         navigate("/editPost/" + postID);
     }
 
     async function handleLikeClick(e: React.MouseEvent<HTMLButtonElement>) {
         e.stopPropagation();
         if (!user) {
-            //setError("You are not logged in");
             alert("You are not logged in");
             return;
         }
@@ -176,132 +179,11 @@ const PostPage = () => {
         navigate(-1);
     };
 
-    if (state) {
-        return (
-            <>
-                <GotoTop />
-                <div
-                    style={{
-                        background: "rgba(0,0,0,0.15)",
-                        minHeight: "100vh",
-                    }}
-                >
-                    <div
-                        className="container d-flex justify-content-center h-100"
-                        style={{
-                            position: "relative",
-                            zIndex: 2,
-                            minHeight: "100vh",
-                        }}
-                    >
-                        <div
-                            style={{
-                                maxWidth: "700px",
-                                width: "100%",
-                                background: "white",
-                            }}
-                        >
-                            <button
-                                style={{
-                                    background: "none",
-                                    fontSize: "1.2rem",
-                                    cursor: "pointer",
-                                    marginBottom: "1rem",
-                                }}
-                                className="btn btn-outline-secondary mt-3"
-                                onClick={handleBack}
-                            >
-                                {"<"}
-                            </button>
-                            <h1 className="text-center pb-3 pt-3">
-                                {state.header}
-                            </h1>
-                            <div>
-                                {state.imgRef && (
-                                    <img
-                                        src={getImageUrl(state.imgRef)}
-                                        className="img-fluid d-block mx-auto my-3 pb-3"
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                            aspectRatio: "16/9",
-                                            objectFit: "cover",
-                                        }}
-                                    />
-                                )}
-                            </div>
-                            <div
-                                className="d-flex align-items-left ps-3"
-                                onClick={() => {
-                                    navigate(`/userPage/${posterID}`);
-                                }}
-                                style={{ cursor: "pointer" }}
-                            >
-                                <img
-                                    src={String(pfp)}
-                                    className="rounded object-fit-cover"
-                                    style={{ width: "40px", height: "40px" }}
-                                />
-                                <h3 className="ps-3 text-center">{username}</h3>
-                            </div>
-                            <div className="d-flex justify-content-end mt-auto">
-                                <h3>{likeCount}</h3>
-                                <button
-                                    onClick={handleLikeClick}
-                                    className={btnClassname}
-                                ></button>
-                            </div>
-                            <p className="text-center">{state.body}</p>
-                            {ownPost && (
-                                <div className=" w-100 d-flex justify-content-center pt-3">
-                                    <button
-                                        className="btn btn-warning"
-                                        style={{ width: "650px" }}
-                                        onClick={handleEditClick}
-                                    >
-                                        Edit
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            </>
-        );
-    }
-
-    const [snippet, setSnippet] = useState<any>(null);
-    const [isSnippet, setSnippetStatus] = useState(false);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const loadPost = async () => {
-            const { data, error } = await supabaseClient
-                .from("Snippets")
-                .select("*")
-                .eq("post_id", Number(postID))
-                .single();
-            if (error) {
-                setSnippetStatus(false);
-                setLoading(false);
-                return;
-            } else if (data === null) {
-                setLoading(false);
-                setSnippetStatus(false);
-                return;
-            }
-            setSnippet(data);
-            setSnippetStatus(true);
-            setLoading(false);
-        };
-        loadPost();
-    }, [postID, user]);
-
-    if (loading) {
+    if (snippetLoading) {
         return <h3 className="pt-3 center-text">Loading...</h3>;
     }
 
-    if (!isSnippet && !loading) {
+    if (!isSnippet && !snippetLoading) {
         return (
             <>
                 <GotoTop />
@@ -315,7 +197,7 @@ const PostPage = () => {
         );
     }
 
-    if (isSnippet && !loading) {
+    if (isSnippet && !snippetLoading && !userLoading) {
         return (
             <>
                 <GotoTop />
