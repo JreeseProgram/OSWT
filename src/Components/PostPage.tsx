@@ -13,9 +13,11 @@ const PostPage = () => {
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
+    const [posterID, setPosterID] = useState<string>("");
     const [ownPost, setOwnPost] = useState<boolean | null>(null);
 
     const user = useUser();
+    const navigate = useNavigate();
 
     function getImageUrl(path: string) {
         const { data } = supabaseClient.storage
@@ -43,6 +45,7 @@ const PostPage = () => {
                 setOwnPost(false);
                 alert("AAAAAAAAHHHHHHHHHHH:" + error.message);
             }
+            setPosterID(id?.user_id);
 
             if (loggedUser === String(id?.user_id)) {
                 setOwnPost(true);
@@ -168,7 +171,6 @@ const PostPage = () => {
             setLiked(false);
         }
     }
-    const navigate = useNavigate();
 
     const handleBack = () => {
         navigate(-1);
@@ -228,7 +230,13 @@ const PostPage = () => {
                                     />
                                 )}
                             </div>
-                            <div className="d-flex align-items-left ps-3">
+                            <div
+                                className="d-flex align-items-left ps-3"
+                                onClick={() => {
+                                    navigate(`/userPage/${posterID}`);
+                                }}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <img
                                     src={String(pfp)}
                                     className="rounded object-fit-cover"
@@ -361,7 +369,13 @@ const PostPage = () => {
                                     />
                                 )}
                             </div>
-                            <div className="d-flex align-items-left ps-3">
+                            <div
+                                className="d-flex align-items-left ps-3"
+                                onClick={() => {
+                                    navigate(`/userPage/${posterID}`);
+                                }}
+                                style={{ cursor: "pointer" }}
+                            >
                                 <img
                                     src={String(pfp)}
                                     className="rounded object-fit-cover"
