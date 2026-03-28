@@ -44,18 +44,23 @@ const Search = () => {
                 </button>
             </form>
 
-            <Grid
-                snippets={snippets.map((snippet) => (
-                    <Snippet
-                        key={snippet.post_id}
-                        userID={snippet.user_id}
-                        postID={snippet.post_id}
-                        header={snippet.header}
-                        body={snippet.body}
-                        imgRef={snippet.img ?? undefined}
-                    />
-                ))}
-            />
+            {snippets.length > 0 && (
+                <Grid
+                    snippets={snippets.map((snippet) => (
+                        <Snippet
+                            key={snippet.post_id}
+                            userID={snippet.user_id}
+                            postID={snippet.post_id}
+                            header={snippet.header}
+                            body={snippet.body}
+                            imgRef={snippet.img ?? undefined}
+                        />
+                    ))}
+                />
+            )}
+            {snippets.length === 0 && (
+                <h3 className="text-center">No Posts Found</h3>
+            )}
         </>
     );
 };
