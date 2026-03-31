@@ -1,8 +1,17 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import GotoTop from "./GotoTop";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
+
+interface Comment {
+    id: number;
+    post_id: number;
+    user_id: string;
+    username: string;
+    comment: string;
+    created_at: string;
+}
 
 const PostPage = () => {
     const { postID } = useParams();
@@ -10,9 +19,13 @@ const PostPage = () => {
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
 
+    const [retrievedComments, setRetrievedComments] = useState<Comment[]>([]);
+
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
     const [posterID, setPosterID] = useState<string>("");
+
+    const [comment, setComment] = useState("");
 
     const [ownPost, setOwnPost] = useState<boolean | null>(null);
 
@@ -132,6 +145,24 @@ const PostPage = () => {
         return;
     }, [posterID]);
 
+    //Load all comments
+    useEffect(() => {
+        const getComments = async () => {
+            const { data, error } = await supabaseClient
+                .from("Comments")
+                .select("*")
+                .eq("post_id", Number(postID))
+                .order("created_at", { ascending: true });
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+            setRetrievedComments(data);
+        };
+        getComments();
+    }, [postID]);
+
     const btnClassname = liked
         ? "thumbs-up-fill d-flex flex-column mt-auto"
         : "thumbs-up-hollow d-flex flex-column mt-auto";
@@ -175,6 +206,32 @@ const PostPage = () => {
         }
     }
 
+    const handleCommentPost = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        if (!user) {
+            alert("Please sign in to comment");
+            return;
+        }
+        if (comment.length < 1) {
+            return;
+        }
+
+        const { error } = await supabaseClient.from("Comments").insert({
+            post_id: Number(postID),
+            user_id: user.id,
+            username: user.user_metadata.display_name,
+            comment: comment,
+        });
+
+        if (error) {
+            alert(error.message);
+            return;
+        }
+        setComment("");
+
+        navigate(0);
+    };
     const handleBack = () => {
         navigate(-1);
     };
@@ -284,6 +341,37 @@ const PostPage = () => {
                                     </button>
                                 </div>
                             )}
+                            {user && (
+                                <form
+                                    className="d-flex my-3 mx-2"
+                                    onSubmit={handleCommentPost}
+                                >
+                                    <input
+                                        type="textarea"
+                                        className="form-control"
+                                        onChange={(e) => {
+                                            setComment(e.target.value);
+                                        }}
+                                    ></input>
+                                    <button className="btn btn-success ms-2">
+                                        Post
+                                    </button>
+                                </form>
+                            )}
+                            <div className="my-2 mx-2">
+                                {retrievedComments.length > 0 &&
+                                    retrievedComments.map((c) => (
+                                        <div key={c.id} className="comment">
+                                            <strong>{c.username}: </strong>
+                                            <span>{c.comment}</span>
+                                        </div>
+                                    ))}
+                                {retrievedComments.length == 0 && (
+                                    <h3 className="text-center">
+                                        No Comments Posted Yet
+                                    </h3>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
