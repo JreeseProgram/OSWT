@@ -362,7 +362,16 @@ const PostPage = () => {
                                 {retrievedComments.length > 0 &&
                                     retrievedComments.map((c) => (
                                         <div key={c.id} className="comment">
-                                            <strong>{c.username}: </strong>
+                                            <strong
+                                                style={{ cursor: "pointer" }}
+                                                onClick={() => {
+                                                    navigate(
+                                                        `/userPage/${c.user_id}`,
+                                                    );
+                                                }}
+                                            >
+                                                {c.username}:{" "}
+                                            </strong>
                                             <span>{c.comment}</span>
                                         </div>
                                     ))}
