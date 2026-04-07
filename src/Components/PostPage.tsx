@@ -28,6 +28,7 @@ const PostPage = () => {
     const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
 
     const [comment, setComment] = useState("");
+    const [submittingComment, setCommentSubmission] = useState(false);
 
     const [ownPost, setOwnPost] = useState<boolean | null>(null);
 
@@ -211,11 +212,16 @@ const PostPage = () => {
     const handleCommentPost = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setCommentSubmission(true);
+
         if (!user) {
             alert("Please sign in to comment");
+            setCommentSubmission(false);
             return;
         }
         if (comment.length < 1) {
+            setCommentSubmission(false);
+            alert("Comments must have at least one character");
             return;
         }
 
@@ -228,9 +234,11 @@ const PostPage = () => {
 
         if (error) {
             alert(error.message);
+            setCommentSubmission(false);
             return;
         }
         setComment("");
+        setCommentSubmission(false);
 
         navigate(0);
     };
@@ -385,7 +393,10 @@ const PostPage = () => {
                                             setComment(e.target.value);
                                         }}
                                     ></input>
-                                    <button className="btn btn-success ms-2">
+                                    <button
+                                        className="btn btn-success ms-2"
+                                        disabled={submittingComment}
+                                    >
                                         Post
                                     </button>
                                 </form>
