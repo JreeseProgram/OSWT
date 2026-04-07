@@ -4,11 +4,17 @@ import supabaseClient from "./supabaseClient";
 
 const CreatePost = () => {
     const [header, setHeader] = useState("");
+
     const [image, setImage] = useState<string | null>(null);
     const [imageFile, setFile] = useState<File | null>(null);
+
     const [body, setBody] = useState("");
+
+    const [isSubmitting, setSubmission] = useState(false);
+
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<string | null>(null);
+
     const user = useUser();
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,9 +27,12 @@ const CreatePost = () => {
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
+
+        setSubmission(true);
         if (!user) {
             setSuccess(null);
             setError("Not Logged in");
+            setSubmission(false);
             return;
         }
 
@@ -43,6 +52,7 @@ const CreatePost = () => {
             if (uploadError) {
                 setSuccess(null);
                 setError(uploadError.message);
+                setSubmission(false);
                 return;
             }
 
@@ -63,6 +73,7 @@ const CreatePost = () => {
         if (error) {
             setSuccess(null);
             setError(error.message);
+            setSubmission(false);
             return;
         }
 
@@ -72,6 +83,7 @@ const CreatePost = () => {
         setFile(null);
         setError(null);
         setSuccess("Snippet has been successfully posted!");
+        setSubmission(false);
     }
 
     return (
@@ -130,6 +142,7 @@ const CreatePost = () => {
                 <button
                     type="submit"
                     className="btn btn-primary d-flex ms-auto w-11"
+                    disabled={isSubmitting}
                 >
                     Submit
                 </button>
