@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useUser } from "./UserContext";
 import supabaseClient from "./supabaseClient";
+import { useEffect, useState } from "react";
 
 interface Props {
     siteTitle: string;
@@ -9,6 +10,32 @@ interface Props {
 const Navbar = ({ siteTitle }: Props) => {
     const user = useUser();
     const navigate = useNavigate();
+    const [pfp, setPfp] = useState<string>("");
+
+    //update userprofile pic on bar
+    useEffect(() => {
+        const updatePfp = async () => {
+            if (!user) {
+                setPfp("");
+                return;
+            }
+
+            const { data: pfpPath } = await supabaseClient
+                .from("Profiles")
+                .select("profile_picture")
+                .eq("id", user.id)
+                .single();
+
+            setPfp(
+                supabaseClient.storage
+                    .from("profile_pics")
+                    .getPublicUrl(pfpPath?.profile_picture).data.publicUrl,
+            );
+
+            //setPfp()
+        };
+        updatePfp();
+    }, [user]);
 
     return (
         <nav
@@ -29,6 +56,23 @@ const Navbar = ({ siteTitle }: Props) => {
                 <Link className="navbar-brand mx-auto" to="/">
                     {siteTitle}
                 </Link>
+                {!user && (
+                    <div>
+                        <Link
+                            className="navbar-brand"
+                            to="/login"
+                            style={{ marginRight: "10px" }}
+                        >
+                            Login
+                        </Link>
+                    </div>
+                )}
+                {user && (
+                    <img
+                        src={pfp}
+                        style={{ maxWidth: "40px", borderRadius: "6px" }}
+                    />
+                )}
                 <div
                     className="offcanvas nav-bg-color offcanvas-start"
                     tabIndex={-1}
