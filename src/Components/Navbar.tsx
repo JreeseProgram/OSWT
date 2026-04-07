@@ -61,9 +61,9 @@ const Navbar = ({ siteTitle }: Props) => {
                         <Link
                             className="navbar-brand"
                             to="/login"
-                            style={{ marginRight: "10px" }}
+                            style={{ marginRight: "10px", color: "#3656F5" }}
                         >
-                            Login
+                            <strong>Login</strong>
                         </Link>
                     </div>
                 )}
