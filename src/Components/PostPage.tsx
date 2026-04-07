@@ -25,6 +25,8 @@ const PostPage = () => {
     const [pfp, setPfp] = useState<string | null>(null);
     const [posterID, setPosterID] = useState<string>("");
 
+    const [fullscreenImage, setFullscreenImage] = useState<string | null>(null);
+
     const [comment, setComment] = useState("");
 
     const [ownPost, setOwnPost] = useState<boolean | null>(null);
@@ -304,10 +306,40 @@ const PostPage = () => {
                                             height: "100%",
                                             aspectRatio: "16/9",
                                             objectFit: "cover",
+                                            cursor: "pointer",
                                         }}
+                                        onClick={() =>
+                                            setFullscreenImage(
+                                                getImageUrl(snippet.img),
+                                            )
+                                        }
                                     />
                                 )}
                             </div>
+                            {fullscreenImage && (
+                                <div
+                                    onClick={() => setFullscreenImage(null)}
+                                    style={{
+                                        position: "fixed",
+                                        inset: 0,
+                                        background: "rgba(0,0,0,0.8)",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        zIndex: 9999,
+                                        paddingTop: "50px",
+                                    }}
+                                >
+                                    <img
+                                        src={fullscreenImage}
+                                        style={{
+                                            maxWidth: "90%",
+                                            maxHeight: "90%",
+                                            borderRadius: "4px",
+                                        }}
+                                    />
+                                </div>
+                            )}
                             <div
                                 className="d-flex align-items-left ps-3"
                                 onClick={() => {
