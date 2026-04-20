@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import Grid from "./Grid";
-//import { testData } from "./TestData";
 import supabaseClient from "./supabaseClient";
 import Snippet from "./Snippet";
 

@@ -243,7 +243,7 @@ const PostPage = () => {
         navigate(0);
     };
     const handleBack = () => {
-        navigate(-1);
+        navigate("/");
     };
 
     if (snippetLoading) {
@@ -296,10 +296,10 @@ const PostPage = () => {
                                     cursor: "pointer",
                                     marginBottom: "1rem",
                                 }}
-                                className="btn btn-outline-secondary mt-3"
+                                className="btn btn-outline-secondary mt-2"
                                 onClick={handleBack}
                             >
-                                {"<"}
+                                {"< Home"}
                             </button>
                             <h1 className="text-center pb-3 pt-3">
                                 {snippet.header}

@@ -13,9 +13,7 @@ const Snippet = ({ header, imgRef, body, postID }: Props) => {
     const navigate = useNavigate();
 
     const handleFullscreen = () => {
-        navigate(`/${postID}`, {
-            state: { header, imgRef, body, postID },
-        });
+        navigate(`/${postID}`);
     };
     function getImageUrl(path: string) {
         const { data } = supabaseClient.storage
@@ -31,8 +29,6 @@ const Snippet = ({ header, imgRef, body, postID }: Props) => {
             style={{
                 aspectRatio: "1 / 1",
                 width: "100%",
-                //display: "flex",
-                //flexDirection: "column",
                 display: "block",
                 overflow: "hidden",
                 cursor: "pointer",
