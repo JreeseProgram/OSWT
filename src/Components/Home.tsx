@@ -11,6 +11,13 @@ interface SnippetRow {
     body: string;
 }
 
+export const sorting = {
+    Alphabetical: "header",
+    Date: "created_at",
+} as const;
+
+export type sorting = (typeof sorting)[keyof typeof sorting];
+
 const Home = () => {
     //empty array of snippets
     const [snippets, setSnippets] = useState<SnippetRow[]>([]);
@@ -18,12 +25,17 @@ const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    const [isAsc, setAsc] = useState<boolean>(true);
+
+    const [sortOption, setSortOption] = useState<sorting>(sorting.Date);
+
     useEffect(() => {
         const loadSnippets = async () => {
+            setLoading(true);
             const { data, error } = await supabaseClient
                 .from("Snippets")
                 .select("*")
-                .order("post_id", { ascending: true });
+                .order(sortOption, { ascending: isAsc });
 
             if (error) {
                 setError(error.message);
@@ -34,7 +46,7 @@ const Home = () => {
         };
 
         loadSnippets();
-    }, []);
+    }, [isAsc, sortOption]);
 
     if (loading) {
         return (
@@ -52,6 +64,30 @@ const Home = () => {
         <>
             <div className="mb-4">
                 <h1 className="text-center pt-3 pb-2">Home</h1>
+
+                <div className="d-flex flex-column ms-2 mx-2 my-3">
+                    <h4 className="text-center">Sort</h4>
+                    <select
+                        className="form-select w-80 mt-2 mb-1 me-2"
+                        value={sortOption}
+                        onChange={(e) =>
+                            setSortOption(e.target.value as sorting)
+                        }
+                    >
+                        <option value={sorting.Alphabetical}>
+                            Alphabetical
+                        </option>
+                        <option value={sorting.Date}>Date</option>
+                    </select>
+                    <select
+                        className="form-select w-10"
+                        value={isAsc ? "true" : "false"}
+                        onChange={(e) => setAsc(e.target.value === "true")}
+                    >
+                        <option value="true">Ascending</option>
+                        <option value="false">Descending</option>
+                    </select>
+                </div>
                 {error && <p className="alert alert-danger">{error}</p>}
                 <Grid
                     snippets={snippets.map((snippet) => (
