@@ -20,6 +20,7 @@ const PostPage = () => {
     const [likeCount, setLikeCount] = useState<number | undefined>(0);
 
     const [retrievedComments, setRetrievedComments] = useState<Comment[]>([]);
+    const [commentUpdate, setCommentUpdate] = useState<boolean>(false);
 
     const [username, setPostUsername] = useState<string | null>(null);
     const [pfp, setPfp] = useState<string | null>(null);
@@ -164,7 +165,7 @@ const PostPage = () => {
             setRetrievedComments(data);
         };
         getComments();
-    }, [postID]);
+    }, [postID, commentUpdate]);
 
     const btnClassname = liked
         ? "thumbs-up-fill d-flex flex-column mt-auto"
@@ -209,6 +210,44 @@ const PostPage = () => {
         }
     }
 
+    const handleCommentDelete = (commentId: number) => {
+        if (!user) {
+            alert("You are not the owner of this comment");
+            return undefined;
+        }
+
+        const deleteComment = async () => {
+            let isVerified = false;
+            const { data: verifiedID } = await supabaseClient
+                .from("Comments")
+                .select("user_id")
+                .eq("id", commentId)
+                .single();
+
+            if (verifiedID?.user_id === user.id) {
+                isVerified = true;
+            }
+
+            if (isVerified) {
+                const willDelete = window.confirm(
+                    "Do you want to delete this comment?",
+                );
+
+                if (willDelete) {
+                    await supabaseClient
+                        .from("Comments")
+                        .delete()
+                        .eq("id", commentId);
+
+                    setCommentUpdate(!commentUpdate);
+                }
+                return undefined;
+            }
+            return undefined;
+        };
+        deleteComment();
+    };
+
     const handleCommentPost = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -240,8 +279,11 @@ const PostPage = () => {
         setComment("");
         setCommentSubmission(false);
 
+        setCommentUpdate(!commentUpdate);
+
         navigate(0);
     };
+
     const handleBack = () => {
         navigate("/");
     };
@@ -404,7 +446,10 @@ const PostPage = () => {
                             <div className="my-2 mx-2">
                                 {retrievedComments.length > 0 &&
                                     retrievedComments.map((c) => (
-                                        <div key={c.id} className="comment">
+                                        <div
+                                            key={c.id}
+                                            className="comment my-1"
+                                        >
                                             <strong
                                                 style={{ cursor: "pointer" }}
                                                 onClick={() => {
@@ -416,6 +461,19 @@ const PostPage = () => {
                                                 {c.username}:{" "}
                                             </strong>
                                             <span>{c.comment}</span>
+                                            <span>{"   "}</span>
+                                            {user && user.id == c.user_id && (
+                                                <button
+                                                    onClick={() =>
+                                                        handleCommentDelete(
+                                                            c.id,
+                                                        )
+                                                    }
+                                                    className="btn btn-sm btn-danger"
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
                                         </div>
                                     ))}
                                 {retrievedComments.length == 0 && (
